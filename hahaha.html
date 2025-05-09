@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>🖤 License Hắc Ám Ver 2.6.2</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <style>
+    /* ==== Chữ chạy neon + slide ==== */
+    #animatedText {
+      position: fixed; top: 0; left: 100%;
+      white-space: nowrap; font-size: 24px; font-weight: bold;
+      z-index: 9999; pointer-events: none;
+      animation: slide 10s linear infinite;
+    }
+    #animatedText .char {
+      display: inline-block; animation: rainbow 1s infinite alternate;
+    }
+    @keyframes slide {
+      0%   { left: 100%; } 100% { left: -100%; }
+    }
+    @keyframes rainbow {
+      0% { color: #ff004c } 14% { color: #ffa300 }
+      28% { color: #ffff00 } 42% { color: #00ff04 }
+      56% { color: #00eaff } 70% { color: #d400ff }
+      84% { color: #ff00c8 } 100% { color: #ff004c }
+    }
+
+    /* ==== Glitch chỉ cho tiêu đề panel (h3.glitch) ==== */
+    h3.glitch {
+      position: relative;
+      animation: rainbow 2s infinite linear;
+    }
+    h3.glitch::before,
+    h3.glitch::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    h3.glitch::before {
+      color: #f0f;
+      animation: glitchTop .8s infinite ease-in-out;
+      clip: rect(0,900px,0,0);
+    }
+    h3.glitch::after {
+      color: #0f0;
+      animation: glitchBot .8s infinite ease-in-out;
+      clip: rect(0,900px,0,0);
+    }
+    @keyframes glitchTop {
+      0%   { clip:rect(0,9999px,5px,0);   transform:translate(0,0); }
+      20%  { clip:rect(5px,9999px,10px,0); transform:translate(-2px,-2px); }
+      40%  { clip:rect(10px,9999px,15px,0);transform:translate(2px,2px); }
+      60%  { clip:rect(15px,9999px,20px,0);transform:translate(-2px,2px); }
+      80%  { clip:rect(20px,9999px,25px,0);transform:translate(2px,-2px); }
+      100% { clip:rect(0,9999px,5px,0);   transform:translate(0,0); }
+    }
+    @keyframes glitchBot {
+      0%   { clip:rect(85px,9999px,90px,0); transform:translate(0,0); }
+      20%  { clip:rect(80px,9999px,85px,0); transform:translate(2px,2px); }
+      40%  { clip:rect(75px,9999px,80px,0); transform:translate(-2px,2px); }
+      60%  { clip:rect(70px,9999px,75px,0); transform:translate(2px,-2px); }
+      80%  { clip:rect(65px,9999px,70px,0); transform:translate(-2px,-2px); }
+      100% { clip:rect(85px,9999px,90px,0); transform:translate(0,0); }
+    }
+
+    /* ==== Layout chính ==== */
+    body {
+      margin: 0; padding-top: 30px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0a; color: #ddd;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 380px; margin: 30px auto;
+      background: #111; border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      overflow: hidden; transition: transform .3s;
+    }
+    .container:hover { transform: scale(1.02); }
+    #mod-title {
+      text-align: center; font-size: 24px; font-weight: bold;
+      padding: 12px 0; animation: rainbow 3s linear infinite;
+    }
+
+    .tabs { display: flex; }
+    .tabs button {
+      flex: 1; padding: 14px; background: #111; border: none;
+      cursor: pointer; color: #aaa; font-weight: bold;
+      transition: background .2s, color .2s;
+    }
+    .tabs button.active { background: #0ff; color: #000; }
+
+    .panel {
+      padding: 20px; display: none; animation: fadeIn .5s;
+    }
+    .panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==== Form & nút ==== */
+    input, select, button {
+      width: 100%; padding: 10px; margin-top: 12px; box-sizing: border-box;
+      background: #222; border: 1px solid #333; border-radius: 4px;
+      color: #eee; font-size: 14px; transition: background .2s, border-color .2s;
+    }
+    input:focus, select:focus, button:focus {
+      outline: none; background: #333; border-color: #0ff;
+    }
+    button {
+      background: #0ff; color: #000; font-weight: bold; cursor: pointer;
+      transition: background .2s;
+      /* Ripple đã bị bỏ, không còn pseudo-element nào */
+    }
+    button:hover { background: #0cc; }
+
+    .key-list {
+      max-height: 140px; overflow-y: auto; margin-top: 16px;
+      border: 1px solid #333; background: #111; border-radius: 4px;
+    }
+    .key-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px; border-bottom: 1px solid #222; font-size: 13px;
+    }
+    .key-item:last-child { border-bottom: none; }
+    .key-item .trash { cursor: pointer; color: #f55; }
+
+    .toast {
+      position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,255,255,0.9); color: #000; padding: 10px 20px;
+      border-radius: 20px; opacity: 0; pointer-events: none;
+      animation: toastIn .5s forwards, toastOut .5s 2s forwards;
+    }
+    @keyframes toastIn { to { bottom: 20px; opacity: 1; } }
+    @keyframes toastOut { to { bottom: -50px; opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <!-- Chữ chạy neon + slide -->
+  <div id="animatedText">
+    <span class="char">Huy Plus</span>
+  </div>
+
+  <div class="container">
+    <div id="mod-title">Huy Linh Plus</div>
+
+    <div class="tabs">
+      <button id="tab-user" class="active">Người dùng</button>
+      <button id="tab-predict" style="display:none">Dự đoán</button>
+      <button id="tab-admin">Quản trị</button>
+    </div>
+
+    <div id="panel-user" class="panel active">
+      <h3 class="glitch" data-text="🔑 Kích hoạt Key">🔑 Kích hoạt Key</h3>
+      <input type="text" id="input-key" placeholder="Nhập key…">
+      <button id="btn-validate">Kiểm tra Key</button>
+      <button id="btn-import">Nhập File</button>
+      <input type="file" id="file-import" accept=".json" style="display:none;">
+      <div id="user-result" style="margin-top:16px;font-size:14px;"></div>
+    </div>
+
+    <div id="panel-predict" class="panel">
+      <h3 class="glitch" data-text="🎲 Dự đoán Tài/Xỉu">🎲 Dự đoán Tài/Xỉu</h3>
+      <input type="text" id="session-code" placeholder="Nhập mã phiên…">
+      <input type="number" id="dice1" placeholder="Xí ngầu 1 (1–6)" min="1" max="6">
+      <input type="number" id="dice2" placeholder="Xí ngầu 2 (1–6)" min="1" max="6">
+      <input type="number" id="dice3" placeholder="Xí ngầu 3 (1–6)" min="1" max="6">
+      <button id="btn-predict">Dự đoán ván tiếp theo</button>
+      <div id="predict-result" style="margin-top:16px;font-size:14px;"></div>
+    </div>
+
+    <div id="panel-admin" class="panel">
+      <h3 class="glitch" data-text="⚙️ Quản trị">⚙️ Quản trị</h3>
+      <input type="text" id="admin-user" placeholder="Tên đăng nhập…">
+      <input type="password" id="admin-pass" placeholder="Mật khẩu…">
+      <button id="btn-login">Đăng nhập</button>
+      <div id="admin-area" style="display:none;margin-top:20px;">
+        <label>Chọn thời hạn Key:</label>
+        <select id="select-days">
+          <option value="1">1 Ngày</option>
+          <option value="3">3 Ngày</option>
+          <option value="7">7 Ngày</option>
+        </select>
+        <button id="btn-gen">Tạo Key</button>
+        <button id="btn-export">Xuất Key</button>
+        <div class="key-list" id="key-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script>
+    // copy key + fallback prompt
+    function copyClip(txt) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => showToast("Đã sao chép key!"))
+        .catch(() => prompt("Copy key này rồi OK:", txt));
+      } else {
+        prompt("Copy key này rồi OK:", txt);
+      }
+    }
+    const ADMIN_CRED = { user: atob("YWRtaW4="), pass: atob("bHV1ZHVjaHV5") };
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2500);
+    }
+    function getDeviceId() {
+      let id = localStorage.getItem("device_id");
+      if (!id) { id = Math.random().toString(36).substr(2,10); localStorage.setItem("device_id", id); }
+      return id;
+    }
+    function loadDB() {
+      try { return JSON.parse(localStorage.getItem("licenseDB")||"{}"); }
+      catch { return {}; }
+    }
+    function saveDB(db) { localStorage.setItem("licenseDB", JSON.stringify(db)); }
+    function randomKey() {
+      return "XXXX-XXXX-XXXX".replace(/X/g, () => (Math.random()*36|0).toString(36).toUpperCase());
+    }
+    async function validateKey(key) {
+      const db = loadDB();
+      if (!db[key]) return {ok:false,msg:"Key không tồn tại"};
+      if (Date.now()>db[key].expires) return {ok:false,msg:"Key đã hết hạn"};
+      const dev = getDeviceId();
+      if (!db[key].device) { db[key].device = dev; saveDB(db); }
+      if (db[key].device !== dev) return {ok:false,msg:"Key đã dùng thiết bị khác"};
+      return {ok:true,expires:db[key].expires};
+    }
+    function predictNextByHistory(gameCode, prevDice) {
+      if (!Array.isArray(prevDice) || prevDice.length!==3) throw new Error("Phải có đúng 3 giá trị xúc xắc.");
+      let gameHash=0;
+      for (let i=0;i<gameCode.length;i++) gameHash+=gameCode.charCodeAt(i)*(i+1);
+      const diceSeed=prevDice[0]+prevDice[1]+prevDice[2]+Math.abs(prevDice[0]-prevDice[2])*3;
+      const seed=(gameHash+diceSeed)*97 % 99991;
+      const dice=[]; for(let i=0;i<3;i++) dice.push(((seed>>(i*5))+prevDice[i%3]*(i+2))%6+1);
+      const total=dice.reduce((a,b)=>a+b,0);
+      const result=total>=11?'Tài':'Xỉu';
+      const diff=Math.max(...prevDice)-Math.min(...prevDice);
+      let confidence=85-diff*10; if(confidence<50) confidence=50;
+      return {dice,total,result,confidence};
+    }
+    document.addEventListener("DOMContentLoaded",()=>{
+      ['user','predict','admin'].forEach(k=>{
+        document.getElementById(`tab-${k}`).onclick=()=>{
+          document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+          document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+          document.getElementById(`tab-${k}`).classList.add("active");
+          document.getElementById(`panel-${k}`).classList.add("active");
+        };
+      });
+      document.getElementById("btn-validate").onclick=async()=>{
+        const k=document.getElementById("input-key").value.trim().toUpperCase();
+        const out=document.getElementById("user-result");
+        if(!k){ showToast("Chưa nhập key"); return; }
+        const res=await validateKey(k);
+        if(res.ok){
+          out.innerHTML=`<span style="color:#5f5">✔️ Hợp lệ đến ${new Date(res.expires).toLocaleString()}</span>`;
+          localStorage.setItem("currentKey",k);
+          document.getElementById("tab-predict").style.display="inline-block";
+          showToast("Kích hoạt thành công");
+        } else {
+          out.innerHTML=`<span style="color:#f55">❌ ${res.msg}</span>`;
+          localStorage.removeItem("currentKey");
+        }
+      };
+      (async()=>{
+        const old=localStorage.getItem("currentKey");
+        if(old){
+          const r=await validateKey(old);
+          if(r.ok){
+            document.getElementById("input-key").value=old;
+            document.getElementById("user-result").innerHTML=`<span style="color:#5f5">✔️ Hợp lệ đến ${new Date(r.expires).toLocaleString()}</span>`;
+            document.getElementById("tab-predict").style.display="inline-block";
+          } else localStorage.removeItem("currentKey");
+        }
+      })();
+      document.getElementById("btn-import").onclick=()=>document.getElementById("file-import").click();
+      document.getElementById("file-import").onchange=evt=>{
+        const f=evt.target.files[0];
+        if(!f){ showToast("Chưa chọn file"); return; }
+        const reader=new FileReader();
+        reader.onload=()=>{
+          try {
+            const imp=JSON.parse(reader.result), db=loadDB(), added=[];
+            for(const k in imp){
+              if(!db[k] || db[k].expires<imp[k].expires){
+                db[k]={expires:imp[k].expires,device:null};
+                added.push(k);
+              }
+            }
+            if(!added.length){ showToast("Không có key mới"); return; }
+            saveDB(db);
+            document.getElementById("input-key").value=added[0];
+            document.getElementById("btn-validate").click();
+            showToast("Import thành công");
+          } catch {
+            showToast("File JSON không hợp lệ");
+          }
+        };
+        reader.readAsText(f);
+      };
+      document.getElementById("btn-login").onclick=()=>{
+        const u=document.getElementById("admin-user").value.trim();
+        const p=document.getElementById("admin-pass").value;
+        if(u===ADMIN_CRED.user && p===ADMIN_CRED.pass){
+          document.getElementById("admin-area").style.display="block";
+          renderList();
+          showToast("Đăng nhập thành công");
+        } else showToast("Sai thông tin admin");
+      };
+      function renderList(){
+        const wrap=document.getElementById("key-list");
+        wrap.innerHTML="";
+        const db=loadDB();
+        for(const k in db){
+          const d=new Date(db[k].expires);
+          const li=document.createElement("div");
+          li.className="key-item";
+          li.innerHTML=`<span>${k} (HSD:${d.toLocaleDateString()}) - Dev:${db[k].device||"Chưa"}</span><span class="trash" data-key="${k}">🗑️</span>`;
+          li.querySelector(".trash").onclick=()=>{
+            delete db[k];
+            saveDB(db);
+            renderList();
+            showToast("Đã xoá "+k);
+          };
+          wrap.appendChild(li);
+        }
+      }
+      document.getElementById("btn-gen").onclick=()=>{
+        const days=+document.getElementById("select-days").value;
+        if(![1,3,7].includes(days)){ showToast("Chọn 1,3 hoặc 7 ngày"); return; }
+        const k=randomKey(), db=loadDB();
+        db[k]={expires:Date.now()+days*86400000,device:null};
+        saveDB(db);
+        renderList();
+        copyClip(k);
+      };
+      // Thay thế đoạn xử lý btn-export hiện tại bằng:
+
+document.getElementById("btn-export").onclick = () => {
+  const db   = loadDB();
+  const json = JSON.stringify(db, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url  = URL.createObjectURL(blob);
+
+  // Tạo thẻ <a> ẩn
+  const a = document.createElement("a");
+  a.style.display = "none";
+  a.href    = url;
+  a.download = "license_keys.json";
+  document.body.appendChild(a);
+
+  // Gọi click ngay trong handler
+  a.click();
+
+  // Dọn dẹp
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast("Tải file key thành công!");
+};
+
+
+      document.getElementById("btn-predict").onclick=()=>{
+        const code=document.getElementById("session-code").value.trim();
+        const prev=[
+          +document.getElementById("dice1").value,
+          +document.getElementById("dice2").value,
+          +document.getElementById("dice3").value
+        ];
+        try{
+          const {dice,total,result,confidence}=predictNextByHistory(code,prev);
+          document.getElementById("predict-result").innerHTML=
+            `<p>Ván trước: <strong>${prev.join(' - ')}</strong></p>
+             <p style="color:#0ff">Dự đoán: <strong>${result}</strong> (Tổng:${total})</p>
+             <p>Xúc xắc: ${dice.join(' - ')}</p>
+             <p>Độ tin cậy: <strong>${confidence}%</strong></p>`;
+        } catch(err){
+          alert(err.message);
+        }
+      };
+    });
+  </script>
+</body>
+</html>
